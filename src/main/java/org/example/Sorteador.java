@@ -5,18 +5,21 @@ import java.util.Random;
 
 public class Sorteador {
     private ArrayList<Integer> nSorteados;
-    private int[] nRestantes;
+    private ArrayList<Integer> nRestantes;
 
 
-    public void sorteiaNumero(int[] nRestantes){
+    public boolean sorteiaNumero(ArrayList<Integer> nRestantes){
         Random rand = new Random();
-
+        if(nRestantes.size() <= 25){
+            return false;
+        }
+        
     }
 
-    public int[] geraNumeros(){
-        int[] array = new int[50];
+    public ArrayList<Integer> geraNumeros(){
+        ArrayList<Integer> array = new ArrayList<>(50);
         for (int i = 1; i <= 50 ; i++) {
-            array[i-1] = i;
+            array.add(i-1, i);
         }
         return array;
     }
