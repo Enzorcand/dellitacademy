@@ -20,15 +20,20 @@ public class Aposta {
         this.nSequencial = lastNumber + 1;
     }
 
-    public void setNumeros(ArrayList<Integer> array) {
-
+    public void setNumeros(List<Integer> array) {
+        for (int i: array) {
+            Numero n = new Numero(i);
+            numeros.add(n);
+        }
     }
     
     public void checkVenceu(List<Integer> sorteio){
-        for (int n:
-             sorteio) {
-            for (int i = 0; i < numeros.size(); i++) {
-
+        for (int n: sorteio) {
+            for (Numero numero : numeros) {
+                if (n == numero.getValor()) {
+                    numero.setEscolhido(true);
+                    break;
+                }
             }
         }
     }

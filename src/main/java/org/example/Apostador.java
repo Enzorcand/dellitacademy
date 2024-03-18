@@ -29,7 +29,6 @@ public class Apostador {
                 !entrada.equalsIgnoreCase("2")){
             throw new IllegalArgumentException("Ação invalida!");
         }
-
         Aposta a = new Aposta(lastSequencial);
         if(entrada.equals("1")){
             a.setNumeros(setManualNumbers());
@@ -37,8 +36,6 @@ public class Apostador {
         if(entrada.equals("2")){
             a.setNumeros(setRandomNumbers());
         }
-
-
     }
 
     private ArrayList<Integer> setRandomNumbers() {

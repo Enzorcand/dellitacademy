@@ -10,6 +10,7 @@ import java.util.Scanner;
 public class Sistema {
     private Aposta lastAposta;
     private HashMap<Integer, Apostador> participantes;
+    private ArrayList<Integer> nSorteados;
     private Sorteador sorteio;
 
     public int nVezesEscolhido(int numero){
@@ -32,10 +33,15 @@ public class Sistema {
     }
 
     public void registerApostador(int cpf){
-
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Insira o nome do apostador:");
+        String nome = scan.nextLine();
     }
 
     public void registerApostador(){
-
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Insira o cpf do apostador:");
+        int cpf = Integer.parseInt(scan.nextLine());
+        registerApostador(cpf);
     }
 }

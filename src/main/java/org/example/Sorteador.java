@@ -7,7 +7,7 @@ import java.util.Random;
 
 @Data
 public class Sorteador {
-    private ArrayList<Integer> nSorteados;
+    private int indexSorteio = 0;
     private ArrayList<Integer> nRestantes;
 
 
