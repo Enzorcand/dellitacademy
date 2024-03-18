@@ -1,19 +1,24 @@
 package org.example;
 
+import lombok.Data;
+
 import java.util.ArrayList;
 import java.util.Random;
 
+@Data
 public class Sorteador {
     private ArrayList<Integer> nSorteados;
     private ArrayList<Integer> nRestantes;
 
 
-    public boolean sorteiaNumero(ArrayList<Integer> nRestantes){
+    public int sorteiaNumero(ArrayList<Integer> nRestantes){
         Random rand = new Random();
-        if(nRestantes.size() <= 25){
-            return false;
+        if(25 >= nRestantes.size()){
+            return -1;
         }
-        
+        int i = rand.nextInt(1, nRestantes.size());
+        nRestantes.remove(i);
+        return i;
     }
 
     public ArrayList<Integer> geraNumeros(){
