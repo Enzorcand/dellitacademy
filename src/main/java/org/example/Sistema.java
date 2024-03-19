@@ -5,12 +5,13 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.Set;
 
 @Data
 public class Sistema {
     private Aposta lastAposta;
     private HashMap<Integer, Apostador> participantes;
-    private ArrayList<Apostador> vencedores;
+    private ArrayList<Aposta> vencedores;
     private ArrayList<Integer> nSorteados;
     private Sorteador sorteio;
     public Sistema(){
@@ -53,13 +54,34 @@ public class Sistema {
     }
 
     public void startSorteio(){
-        while(sorteio.sorteiaNumero(nSorteados)){
-            checkVencedores();
+        int i = 0;
+        boolean canContinue = true;
+        while(canContinue){
+            canContinue = sorteio.sorteiaNumero(nSorteados);
+            canContinue = checkVencedores(i);
+            i++;
         }
         System.out.println();
     }
 
-    public void checkVencedores(){
-
+    public boolean checkVencedores(int index){
+        Set<Integer> chaves = participantes.keySet();
+        for(int chave: chaves){
+            Apostador p = participantes.get(chave);
+            for(Aposta a: p.getApostas()){
+                boolean isWinner = true;
+                for(Numero n: a.getNumeros()){
+                    if(!n.isEscolhido()){
+                        isWinner = false;
+                    } else if (nSorteados.get(index) == n.getValor()) {
+                        n.setEscolhido(true);
+                    }
+                }
+                if(isWinner){
+                    vencedores.add(a);
+                }
+            }
+        }
+        return !vencedores.isEmpty();
     }
 }
