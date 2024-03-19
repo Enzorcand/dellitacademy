@@ -6,12 +6,14 @@ import java.util.*;
 
 @Data
 public class Sistema {
-    private Aposta lastAposta;
+    private double arrecadacaoTotal;
+    private int lastAposta = 1000;
     private HashMap<Integer, Apostador> participantes;
     private ArrayList<Apostador> vencedores;
     private ArrayList<Integer> nSorteados;
     private Sorteador sorteio;
     public Sistema(){
+        this.arrecadacaoTotal = 0;
         this.sorteio = new Sorteador();
         this.vencedores = new ArrayList<>();
         this.participantes = new HashMap<>();
@@ -34,7 +36,9 @@ public class Sistema {
                 return;
             }
         }
-        lastAposta = participantes.get(cpf).createAposta(lastAposta.getNSequencial());
+        arrecadacaoTotal += 5;
+        participantes.get(cpf).createAposta(lastAposta);
+        lastAposta++;
     }
     public void registerApostador(int cpf){
         Scanner scan = new Scanner(System.in);
@@ -56,16 +60,22 @@ public class Sistema {
             checkVencedor(i);
         }
         startApuracao();
-
     }
     public void startApuracao(){
         boolean canContinue = true;
         int i = 5;
+        if(!vencedores.isEmpty()){
+            canContinue = false;
+        }
         while (canContinue){
             sorteio.sorteiaNumero(nSorteados);
             canContinue = checkVencedor(i);
             i++;
         }
+        if(vencedores.isEmpty()){
+          return;
+        }
+        Collections.sort(vencedores);
     }
     private boolean checkEscolhido(Aposta a, int index) {
         boolean isWinner = true;
@@ -73,7 +83,7 @@ public class Sistema {
             if(!n.isEscolhido()){
                 isWinner = false;
             }
-            if (nSorteados.get(index) == n.getValor()) {
+            if (nSorteados.get(index) == n.getAnInt()) {
                 n.setEscolhido(true);
             }
         }
@@ -89,7 +99,10 @@ public class Sistema {
                 if(isWinner){
                     a.setVencedora(true);
                 }
-                vencedores.add(p);
+                p.getAPremiadas().add(a);
+                if(!vencedores.contains(p)){
+                    vencedores.add(p);
+                }
             }
         }
         return !vencedores.isEmpty() ||
@@ -97,5 +110,8 @@ public class Sistema {
     }
     public void printVencedores(){
 
+    }
+
+    public void listarApostas() {
     }
 }

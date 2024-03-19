@@ -4,10 +4,10 @@ import lombok.Data;
 
 @Data
 public class Numero {
-    private int valor;
+    private int anInt;
     private boolean escolhido;
 
     public Numero(int valor){
-        this.valor = valor;
+        this.anInt = valor;
     }
 }

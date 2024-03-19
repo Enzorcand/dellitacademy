@@ -10,6 +10,7 @@ import java.util.Scanner;
 @Data
 public class Aposta {
     final int nSequencial;
+    final double valor;
     private ArrayList<Numero> numeros;
     private boolean isVencedora;
     private int acertos;
@@ -18,6 +19,8 @@ public class Aposta {
         this.isVencedora = false;
         this.acertos = 0;
         this.nSequencial = lastNumber + 1;
+        this.valor = 5.0;
+        this.numeros = new ArrayList<>();
     }
 
     public void setNumeros(List<Integer> array) {

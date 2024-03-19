@@ -9,13 +9,17 @@ public class Apostador implements Comparable<Apostador> {
     private int cpf;
     private String nome;
     private HashMap<Integer, Aposta> apostas;
+    private ArrayList<Aposta> aPremiadas;
 
     public Apostador(int cpf, String nome){
         this.cpf = cpf;
         this.nome = nome;
+        apostas = new HashMap<>();
+        aPremiadas = new ArrayList<>();
     }
 
-    public Aposta createAposta(int lastSequencial){
+    //TODO: levar metodo para a classe sistema
+    public void createAposta(int lastSequencial){
         Scanner scan = new Scanner(System.in);
         System.out.println("0 - Voltar");
         System.out.println("1 - Aposta manual");
@@ -27,14 +31,21 @@ public class Apostador implements Comparable<Apostador> {
                 !entrada.equalsIgnoreCase("2")){
             throw new IllegalArgumentException("Ação invalida!");
         }
-        Aposta a = new Aposta(lastSequencial);
+        Aposta a = new Aposta(lastSequencial + 1);
         if(entrada.equals("1")){
             a.setNumeros(setManualNumbers());
         }
         if(entrada.equals("2")){
             a.setNumeros(setRandomNumbers());
         }
-        return a;
+    }
+    // Metodo de teste
+    public void createAposta(int lastSequencial, int entrada){
+
+        Aposta a = new Aposta(lastSequencial + 1);
+        a.setNumeros(setRandomNumbers());
+        apostas.put(a.getNSequencial(), a);
+
     }
 
     private ArrayList<Integer> setRandomNumbers() {
