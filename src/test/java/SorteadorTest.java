@@ -27,7 +27,6 @@ class SorteadorTest {
     @Test
     void allNumbersArePossible(){
         Sistema sistema = new Sistema();
-        Sistema sistema2 = new Sistema();
         Sorteador sorteador = new Sorteador();
         for (int i = 0; i < 25; i++) {
             sorteador.sorteiaNumero(sistema.getNSorteados());

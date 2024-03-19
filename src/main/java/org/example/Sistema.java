@@ -2,21 +2,113 @@ package org.example;
 
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 @Data
 public class Sistema {
     private Aposta lastAposta;
     private HashMap<Integer, Apostador> participantes;
-    private ArrayList<Aposta> vencedores;
+    private SortedSet<Apostador> vencedores;
     private ArrayList<Integer> nSorteados;
     private Sorteador sorteio;
     public Sistema(){
         this.sorteio = new Sorteador();
-        this.vencedores = new ArrayList<>();
+        this.vencedores = new SortedSet<Apostador>() {
+            @Override
+            public Comparator<? super Apostador> comparator() {
+                return null;
+            }
+
+            @Override
+            public SortedSet<Apostador> subSet(Apostador fromElement, Apostador toElement) {
+                return null;
+            }
+
+            @Override
+            public SortedSet<Apostador> headSet(Apostador toElement) {
+                return null;
+            }
+
+            @Override
+            public SortedSet<Apostador> tailSet(Apostador fromElement) {
+                return null;
+            }
+
+            @Override
+            public Apostador first() {
+                return null;
+            }
+
+            @Override
+            public Apostador last() {
+                return null;
+            }
+
+            @Override
+            public int size() {
+                return 0;
+            }
+
+            @Override
+            public boolean isEmpty() {
+                return false;
+            }
+
+            @Override
+            public boolean contains(Object o) {
+                return false;
+            }
+
+            @Override
+            public Iterator<Apostador> iterator() {
+                return null;
+            }
+
+            @Override
+            public Object[] toArray() {
+                return new Object[0];
+            }
+
+            @Override
+            public <T> T[] toArray(T[] a) {
+                return null;
+            }
+
+            @Override
+            public boolean add(Apostador apostador) {
+                return false;
+            }
+
+            @Override
+            public boolean remove(Object o) {
+                return false;
+            }
+
+            @Override
+            public boolean containsAll(Collection<?> c) {
+                return false;
+            }
+
+            @Override
+            public boolean addAll(Collection<? extends Apostador> c) {
+                return false;
+            }
+
+            @Override
+            public boolean retainAll(Collection<?> c) {
+                return false;
+            }
+
+            @Override
+            public boolean removeAll(Collection<?> c) {
+                return false;
+            }
+
+            @Override
+            public void clear() {
+
+            }
+        };
         this.participantes = new HashMap<>();
         this.nSorteados = new ArrayList<>();
     }
@@ -61,9 +153,11 @@ public class Sistema {
             canContinue = checkVencedores(i);
             i++;
         }
-        System.out.println();
+        System.out.println("Sorteio finalizado!");
     }
 
+
+    //To do: fazer uma versão do método sem parametros para os 4 primeiros numeros
     public boolean checkVencedores(int index){
         Set<Integer> chaves = participantes.keySet();
         for(int chave: chaves){
@@ -78,10 +172,11 @@ public class Sistema {
                     }
                 }
                 if(isWinner){
-                    vencedores.add(a);
+                    a.setVencedora(true);
                 }
             }
         }
-        return !vencedores.isEmpty();
+        return !vencedores.isEmpty() ||
+                !(nSorteados.size() >= 25);
     }
 }
