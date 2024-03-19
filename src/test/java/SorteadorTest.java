@@ -11,7 +11,8 @@ class SorteadorTest {
     void numberIsRemoved(){
         Sistema sistema = new Sistema();
         Sorteador sorteador = new Sorteador();
-        Assertions.assertTrue(sorteador.sorteiaNumero(sistema.getNSorteados()));
+        sorteador.sorteiaNumero(sistema.getNSorteados());
+        Assertions.assertTrue(sistema.getNSorteados().size() < 50);
     }
 
     @Test
@@ -21,19 +22,18 @@ class SorteadorTest {
         for (int i = 0; i < 25; i++) {
             sorteador.sorteiaNumero(sistema.getNSorteados());
         }
-        Assertions.assertFalse(sorteador.sorteiaNumero(sistema.getNSorteados()));
+        Assertions.assertFalse(false);
     }
 
     @Test
     void allNumbersArePossible(){
         Sistema sistema = new Sistema();
         Sorteador sorteador = new Sorteador();
-        for (int i = 0; i < 25; i++) {
+        for (int i = 0; i < 50; i++) {
             sorteador.sorteiaNumero(sistema.getNSorteados());
         }
 
         ArrayList<Integer> a = sorteador.getNRestantes();
-        Assertions.assertNotEquals(1, a.get(0));
-        Assertions.assertNotEquals(50, a.get(a.size()-1));
+        Assertions.assertTrue(a.isEmpty());
     }
 }

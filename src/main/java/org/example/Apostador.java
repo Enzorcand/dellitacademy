@@ -2,15 +2,13 @@ package org.example;
 
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 @Data
-public class Apostador {
+public class Apostador implements Comparable<Apostador> {
     private int cpf;
     private String nome;
-    private ArrayList<Aposta> apostas;
+    private HashMap<Integer, Aposta> apostas;
 
     public Apostador(int cpf, String nome){
         this.cpf = cpf;
@@ -81,5 +79,10 @@ public class Apostador {
             }
         }
         return bool;
+    }
+
+    @Override
+    public int compareTo(Apostador a) {
+        return this.nome.compareTo(a.getNome());
     }
 }

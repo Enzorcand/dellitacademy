@@ -8,107 +8,12 @@ import java.util.*;
 public class Sistema {
     private Aposta lastAposta;
     private HashMap<Integer, Apostador> participantes;
-    private SortedSet<Apostador> vencedores;
+    private ArrayList<Apostador> vencedores;
     private ArrayList<Integer> nSorteados;
     private Sorteador sorteio;
     public Sistema(){
         this.sorteio = new Sorteador();
-        this.vencedores = new SortedSet<Apostador>() {
-            @Override
-            public Comparator<? super Apostador> comparator() {
-                return null;
-            }
-
-            @Override
-            public SortedSet<Apostador> subSet(Apostador fromElement, Apostador toElement) {
-                return null;
-            }
-
-            @Override
-            public SortedSet<Apostador> headSet(Apostador toElement) {
-                return null;
-            }
-
-            @Override
-            public SortedSet<Apostador> tailSet(Apostador fromElement) {
-                return null;
-            }
-
-            @Override
-            public Apostador first() {
-                return null;
-            }
-
-            @Override
-            public Apostador last() {
-                return null;
-            }
-
-            @Override
-            public int size() {
-                return 0;
-            }
-
-            @Override
-            public boolean isEmpty() {
-                return false;
-            }
-
-            @Override
-            public boolean contains(Object o) {
-                return false;
-            }
-
-            @Override
-            public Iterator<Apostador> iterator() {
-                return null;
-            }
-
-            @Override
-            public Object[] toArray() {
-                return new Object[0];
-            }
-
-            @Override
-            public <T> T[] toArray(T[] a) {
-                return null;
-            }
-
-            @Override
-            public boolean add(Apostador apostador) {
-                return false;
-            }
-
-            @Override
-            public boolean remove(Object o) {
-                return false;
-            }
-
-            @Override
-            public boolean containsAll(Collection<?> c) {
-                return false;
-            }
-
-            @Override
-            public boolean addAll(Collection<? extends Apostador> c) {
-                return false;
-            }
-
-            @Override
-            public boolean retainAll(Collection<?> c) {
-                return false;
-            }
-
-            @Override
-            public boolean removeAll(Collection<?> c) {
-                return false;
-            }
-
-            @Override
-            public void clear() {
-
-            }
-        };
+        this.vencedores = new ArrayList<>();
         this.participantes = new HashMap<>();
         this.nSorteados = new ArrayList<>();
     }
@@ -146,37 +51,51 @@ public class Sistema {
     }
 
     public void startSorteio(){
-        int i = 0;
+        for (int i = 0; i < 5; i++) {
+            sorteio.sorteiaNumero(nSorteados);
+            checkVencedor(i);
+        }
+        startApuracao();
+
+    }
+    public void startApuracao(){
         boolean canContinue = true;
-        while(canContinue){
-            canContinue = sorteio.sorteiaNumero(nSorteados);
-            canContinue = checkVencedores(i);
+        int i = 5;
+        while (canContinue){
+            sorteio.sorteiaNumero(nSorteados);
+            canContinue = checkVencedor(i);
             i++;
         }
-        System.out.println("Sorteio finalizado!");
+    }
+    private boolean checkEscolhido(Aposta a, int index) {
+        boolean isWinner = true;
+        for(Numero n: a.getNumeros()){
+            if(!n.isEscolhido()){
+                isWinner = false;
+            }
+            if (nSorteados.get(index) == n.getValor()) {
+                n.setEscolhido(true);
+            }
+        }
+        return isWinner;
     }
 
-
-    //To do: fazer uma versão do método sem parametros para os 4 primeiros numeros
-    public boolean checkVencedores(int index){
+    public boolean checkVencedor(int index){
         Set<Integer> chaves = participantes.keySet();
         for(int chave: chaves){
             Apostador p = participantes.get(chave);
-            for(Aposta a: p.getApostas()){
-                boolean isWinner = true;
-                for(Numero n: a.getNumeros()){
-                    if(!n.isEscolhido()){
-                        isWinner = false;
-                    } else if (nSorteados.get(index) == n.getValor()) {
-                        n.setEscolhido(true);
-                    }
-                }
+            for(Aposta a: p.getApostas().values()){
+                boolean isWinner = checkEscolhido(a,index);
                 if(isWinner){
                     a.setVencedora(true);
                 }
+                vencedores.add(p);
             }
         }
         return !vencedores.isEmpty() ||
                 !(nSorteados.size() >= 25);
+    }
+    public void printVencedores(){
+
     }
 }
