@@ -17,7 +17,7 @@ public class Apostador {
         this.nome = nome;
     }
 
-    public void createAposta(int lastSequencial){
+    public Aposta createAposta(int lastSequencial){
         Scanner scan = new Scanner(System.in);
         System.out.println("0 - Voltar");
         System.out.println("1 - Aposta manual");
@@ -36,6 +36,7 @@ public class Apostador {
         if(entrada.equals("2")){
             a.setNumeros(setRandomNumbers());
         }
+        return a;
     }
 
     private ArrayList<Integer> setRandomNumbers() {

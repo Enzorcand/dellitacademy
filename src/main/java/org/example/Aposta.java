@@ -26,15 +26,4 @@ public class Aposta {
             numeros.add(n);
         }
     }
-    
-    public void checkVenceu(List<Integer> sorteio){
-        for (int n: sorteio) {
-            for (Numero numero : numeros) {
-                if (n == numero.getValor()) {
-                    numero.setEscolhido(true);
-                    break;
-                }
-            }
-        }
-    }
 }
