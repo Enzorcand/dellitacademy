@@ -23,7 +23,7 @@ class SistemaTest {
         boolean isSorted = true;
         for (int i = 0; i < 10; i++) {
             x--;
-            Apostador a = new Apostador(i, x + "");
+            Apostador a = new Apostador(i + "", x + "");
             sistema.getVencedores().add(a);
         }
         ArrayList<Apostador> array = sistema.getVencedores();
@@ -41,15 +41,20 @@ class SistemaTest {
     void sorteioIsWinnable(){
         Sistema sistema = new Sistema();
         char c = 'a';
-        for (int i = 0; i < 100; i++) {
-
-            Apostador a = new Apostador(i, c + "");
-            a.createAposta(i, 2);
+        for (int i = 0; i < 300; i++) {
+            Apostador a = new Apostador(i + "", c + "");
+            a.createAposta(i, "2");
             c++;
         }
         sistema.startSorteio();
-
         Assertions.assertTrue(sistema.getVencedores().isEmpty());
+    }
+
+    @Test
+    void invalidCpfNotAcepted(){
+        Sistema sistema = new Sistema();
+        Assertions.assertFalse(sistema.registerApostador("12"));
+        Assertions.assertFalse(sistema.registerApostador("abc12345678"));
     }
 
 

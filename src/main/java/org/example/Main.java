@@ -22,7 +22,6 @@ public class Main {
 
     public static int selectMenu(){
         Scanner scan = new Scanner(System.in);
-        int entrada = scan.nextInt();
-        return entrada;
+        return scan.nextInt();
     }
 }

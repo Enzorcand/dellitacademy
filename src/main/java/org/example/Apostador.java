@@ -6,28 +6,19 @@ import java.util.*;
 
 @Data
 public class Apostador implements Comparable<Apostador> {
-    private int cpf;
+    private String cpf;
     private String nome;
     private HashMap<Integer, Aposta> apostas;
     private ArrayList<Aposta> aPremiadas;
 
-    public Apostador(int cpf, String nome){
+    public Apostador(String cpf, String nome){
         this.cpf = cpf;
         this.nome = nome;
         apostas = new HashMap<>();
         aPremiadas = new ArrayList<>();
     }
-
-    //TODO: levar metodo para a classe sistema
-    public void createAposta(int lastSequencial){
-        Scanner scan = new Scanner(System.in);
-        System.out.println("0 - Voltar");
-        System.out.println("1 - Aposta manual");
-        System.out.println("2 - Aposta \"surpresinha\"");
-
-        String entrada = scan.nextLine();
-        if (!entrada.equalsIgnoreCase("0") ||
-                !entrada.equalsIgnoreCase("1") ||
+    public void createAposta(int lastSequencial, String entrada){
+        if (!entrada.equalsIgnoreCase("1") ||
                 !entrada.equalsIgnoreCase("2")){
             throw new IllegalArgumentException("Ação invalida!");
         }
@@ -38,19 +29,12 @@ public class Apostador implements Comparable<Apostador> {
         if(entrada.equals("2")){
             a.setNumeros(setRandomNumbers());
         }
-    }
-    // Metodo de teste
-    public void createAposta(int lastSequencial, int entrada){
-
-        Aposta a = new Aposta(lastSequencial + 1);
-        a.setNumeros(setRandomNumbers());
         apostas.put(a.getNSequencial(), a);
-
     }
 
     private ArrayList<Integer> setRandomNumbers() {
         Random rand = new Random();
-        ArrayList<Integer> a = new ArrayList<Integer>();
+        ArrayList<Integer> a = new ArrayList<>();
         int n;
         for (int i = 0; i < 5;) {
             n = rand.nextInt(1,50);
@@ -64,7 +48,7 @@ public class Apostador implements Comparable<Apostador> {
 
     private ArrayList<Integer> setManualNumbers() {
         Scanner scan = new Scanner(System.in);
-        ArrayList<Integer> a = new ArrayList<Integer>();
+        ArrayList<Integer> a = new ArrayList<>();
         int n;
 
         System.out.println("Insira 5 valores diferentes para a aposta de 1 a 50:");

@@ -8,7 +8,7 @@ import java.util.*;
 public class Sistema {
     private double arrecadacaoTotal;
     private int lastAposta = 1000;
-    private HashMap<Integer, Apostador> participantes;
+    private HashMap<String, Apostador> participantes;
     private ArrayList<Apostador> vencedores;
     private ArrayList<Integer> nSorteados;
     private Sorteador sorteio;
@@ -24,34 +24,48 @@ public class Sistema {
         return 0;
     }
     public void registerAposta(){
-        System.out.println("Insira o cpf do apostador:");
+
         Scanner scan = new Scanner(System.in);
-        int cpf = scan.nextInt();
+        boolean incorrectInput = true;
+        System.out.println("Insira o cpf do apostador:");
+        String cpf = scan.nextLine();
         if(participantes.get(cpf) == null){
-            System.out.println("Apostador não cadastrado. Deseja cadastra-lo? (y/n)");
-            String entrada = scan.nextLine();
-            if (entrada.equalsIgnoreCase("Y")||
-                    entrada.equalsIgnoreCase("y")){
-                registerApostador(cpf);
-                return;
-            }
+            do {
+                cpf = scan.nextLine();
+                incorrectInput = registerApostador(cpf);
+            } while(incorrectInput);
         }
         arrecadacaoTotal += 5;
-        participantes.get(cpf).createAposta(lastAposta);
+        participantes.get(cpf).createAposta(lastAposta, selectApostaType(scan));
         lastAposta++;
+        scan.close();
     }
-    public void registerApostador(int cpf){
+
+    private String selectApostaType(Scanner scan){
+        System.out.println("1 - Aposta manual");
+        System.out.println("2 - Aposta \"surpresinha\"");
+        return scan.nextLine();
+    }
+    public boolean registerApostador(String cpf){
         Scanner scan = new Scanner(System.in);
+        boolean allNumbers = true;
+        if (cpf.length() != 11){
+            System.out.println("Tamanho de cpf invalido!");
+            return false;
+        }
+        char[] a = cpf.toCharArray();
+        for (char c: a) {
+            if(!(c >= '0' && c <= '9')){
+                System.out.println("Formato de cpf inválido!");
+                return false;
+            }
+        }
         System.out.println("Insira o nome do apostador:");
         String nome = scan.nextLine();
         Apostador apostador = new Apostador(cpf, nome);
         participantes.put(cpf, apostador);
-    }
-    public void registerApostador(){
-        Scanner scan = new Scanner(System.in);
-        System.out.println("Insira o cpf do apostador:");
-        int cpf = Integer.parseInt(scan.nextLine());
-        registerApostador(cpf);
+        scan.close();
+        return true;
     }
 
     public void startSorteio(){
@@ -77,22 +91,11 @@ public class Sistema {
         }
         Collections.sort(vencedores);
     }
-    private boolean checkEscolhido(Aposta a, int index) {
-        boolean isWinner = true;
-        for(Numero n: a.getNumeros()){
-            if(!n.isEscolhido()){
-                isWinner = false;
-            }
-            if (nSorteados.get(index) == n.getAnInt()) {
-                n.setEscolhido(true);
-            }
-        }
-        return isWinner;
-    }
+
 
     public boolean checkVencedor(int index){
-        Set<Integer> chaves = participantes.keySet();
-        for(int chave: chaves){
+        Set<String> chaves = participantes.keySet();
+        for(String chave: chaves){
             Apostador p = participantes.get(chave);
             for(Aposta a: p.getApostas().values()){
                 boolean isWinner = checkEscolhido(a,index);
@@ -108,10 +111,25 @@ public class Sistema {
         return !vencedores.isEmpty() ||
                 !(nSorteados.size() >= 25);
     }
+
+
+    private boolean checkEscolhido(Aposta a, int index) {
+        boolean isWinner = true;
+        for(Numero n: a.getNumeros()){
+            if(!n.isEscolhido()){
+                isWinner = false;
+            }
+            if (nSorteados.get(index) == n.getAnInt()) {
+                n.setEscolhido(true);
+            }
+        }
+        return isWinner;
+    }
     public void printVencedores(){
 
     }
 
     public void listarApostas() {
+
     }
 }

@@ -1,12 +1,7 @@
 package org.example;
 import lombok.Data;
-
-import java.util.InputMismatchException;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-
 @Data
 public class Aposta {
     final int nSequencial;
