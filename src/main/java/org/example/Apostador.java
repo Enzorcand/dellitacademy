@@ -7,18 +7,20 @@ import java.util.*;
 @Data
 public class Apostador implements Comparable<Apostador> {
     private String cpf;
+    private double saldo;
     private String nome;
     private HashMap<Integer, Aposta> apostas;
     private ArrayList<Aposta> aPremiadas;
 
     public Apostador(String cpf, String nome){
+        this.saldo = 0;
         this.cpf = cpf;
         this.nome = nome;
         apostas = new HashMap<>();
         aPremiadas = new ArrayList<>();
     }
     public void createAposta(int lastSequencial, String entrada){
-        if (!entrada.equalsIgnoreCase("1") ||
+        if (!entrada.equalsIgnoreCase("1") &&
                 !entrada.equalsIgnoreCase("2")){
             throw new IllegalArgumentException("Ação invalida!");
         }
@@ -37,7 +39,7 @@ public class Apostador implements Comparable<Apostador> {
         ArrayList<Integer> a = new ArrayList<>();
         int n;
         for (int i = 0; i < 5;) {
-            n = rand.nextInt(1,50);
+            n = rand.nextInt(1,51);
             if(checkIfExists(a, n)){
                 i++;
                 a.add(n);

@@ -1,10 +1,12 @@
 import org.example.Aposta;
 import org.example.Apostador;
+import org.example.Numero;
 import org.example.Sistema;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 class SistemaTest {
@@ -29,8 +31,9 @@ class SistemaTest {
         ArrayList<Apostador> array = sistema.getVencedores();
         for(int i = 0; i < array.size() - 1; i++) {
             int n = array.get(i).compareTo(array.get(i + 1));
-            if (n < 0 ) {
+            if (n < 0) {
                 isSorted = false;
+                break;
             }
         }
         sistema.startApuracao();
@@ -42,12 +45,14 @@ class SistemaTest {
         Sistema sistema = new Sistema();
         char c = 'a';
         for (int i = 0; i < 300; i++) {
-            Apostador a = new Apostador(i + "", c + "");
+            String cpf = randomCpf();
+            Apostador a = new Apostador(cpf, c + "");
+            sistema.getParticipantes().put(cpf, a);
             a.createAposta(i, "2");
             c++;
         }
         sistema.startSorteio();
-        Assertions.assertTrue(sistema.getVencedores().isEmpty());
+        Assertions.assertFalse(sistema.getVencedores().isEmpty());
     }
 
     @Test
@@ -57,5 +62,34 @@ class SistemaTest {
         Assertions.assertFalse(sistema.registerApostador("abc12345678"));
     }
 
-
+    @Test
+    void escolhidosIsSorted(){
+        Sistema sistema = new Sistema();
+        char c = 'a';
+        for (int i = 0; i < 300; i++) {
+            String cpf = randomCpf();
+            Apostador a = new Apostador(cpf, c + "");
+            sistema.getParticipantes().put(cpf, a);
+            a.createAposta(i, "2");
+            c++;
+        }
+        ArrayList<Numero> array = sistema.ordenaNumeros();
+        boolean isSorted = true;
+        for(int i = 0; i < array.size() - 1; i++) {
+            int n = array.get(i).compareTo(array.get(i + 1));
+            if (n > 0) {
+                isSorted = false;
+                break;
+            }
+        }
+        Assertions.assertTrue(isSorted);
+    }
+    private String randomCpf() {
+        String cpf = "";
+        Random rand = new Random();
+        for (int i = 0; i < 11; i++) {
+            cpf = cpf + rand.nextInt(0, 9);
+        }
+        return cpf;
+    }
 }
