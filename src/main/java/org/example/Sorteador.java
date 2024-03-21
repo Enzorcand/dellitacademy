@@ -16,9 +16,9 @@ public class Sorteador {
 
     public void sorteiaNumero(ArrayList<Integer> nSorteados) {
         Random rand = new Random();
-        int n = rand.nextInt(1, nRestantes.size() + 1);
-        nSorteados.add(n);
-        nRestantes.remove(n - 1);
+        int n = rand.nextInt(0, nRestantes.size());
+        nSorteados.add(nRestantes.get(n));
+        nRestantes.remove(n);
     }
 
     public void geraNumeros(){

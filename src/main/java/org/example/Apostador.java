@@ -13,7 +13,7 @@ public class Apostador implements Comparable<Apostador> {
     private ArrayList<Aposta> aPremiadas;
 
     public Apostador(String cpf, String nome){
-        this.saldo = 0;
+        this.saldo = 5;
         this.cpf = cpf;
         this.nome = nome;
         apostas = new HashMap<>();
@@ -40,7 +40,7 @@ public class Apostador implements Comparable<Apostador> {
         int n;
         for (int i = 0; i < 5;) {
             n = rand.nextInt(1,51);
-            if(checkIfExists(a, n)){
+            if(!checkIfExists(a, n)){
                 i++;
                 a.add(n);
             }
@@ -52,13 +52,12 @@ public class Apostador implements Comparable<Apostador> {
         Scanner scan = new Scanner(System.in);
         ArrayList<Integer> a = new ArrayList<>();
         int n;
-
         System.out.println("Insira 5 valores diferentes para a aposta de 1 a 50:");
         for (int i = 0; i < 5;) {
             n = scan.nextInt();
-            if(!checkIfExists(a, n) || (n <= 50 && n > 0)){
+            if(checkIfExists(a, n) || !(n <= 50 && n > 0)){
                 System.out.println("Número inválido!");
-            } else if(checkIfExists(a, n)){
+            } else if(!checkIfExists(a, n)){
                 i++;
                 a.add(n);
             }
@@ -67,11 +66,11 @@ public class Apostador implements Comparable<Apostador> {
     }
 
     private boolean checkIfExists(ArrayList<Integer> a, int n){
-        boolean bool = true;
+        boolean bool = false;
         for (int m:
                 a) {
             if (n == m) {
-                bool = false;
+                bool = true;
                 break;
             }
         }

@@ -4,17 +4,24 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Sistema sistema = new Sistema();
+        Scanner scan = new Scanner(System.in);
+        Sistema sistema = new Sistema(scan);
         System.out.println("Bem vindo a Mega Sena Online!");
-        boolean newSorteio = true;
+        boolean newSorteio;
         do{
             sistema.startApostas();
             System.out.println("Deseja realizar outro sorteio? y/n");
-            newSorteio = continueApp();
+            newSorteio = continueApp(scan);
+            sistema.clearApostas();
         }while (newSorteio);
+        scan.close();
     }
-    private static boolean continueApp(){
-        Scanner scan = new Scanner(System.in);
+
+    /**
+     * Método que define se será realizado outro sorteio ou não
+     * @return boolean
+     */
+    private static boolean continueApp(Scanner scan){
         boolean bool = false;
         boolean bool2 = true;
         do {
@@ -30,7 +37,6 @@ public class Main {
             }
 
         }while (bool2);
-        scan.close();
         return bool;
     }
 }

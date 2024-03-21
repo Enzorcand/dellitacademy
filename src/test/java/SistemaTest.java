@@ -13,14 +13,14 @@ class SistemaTest {
 
     @Test
     void zeroWinners(){
-        Sistema sistema = new Sistema();
+        Sistema sistema = new Sistema(new Scanner(System.in));
         sistema.startSorteio();
         Assertions.assertTrue(sistema.getVencedores().isEmpty());
     }
 
     @Test
     void vencedoresAreSorted(){
-        Sistema sistema = new Sistema();
+        Sistema sistema = new Sistema(new Scanner(System.in));
         char x = 'z';
         boolean isSorted = true;
         for (int i = 0; i < 10; i++) {
@@ -42,9 +42,9 @@ class SistemaTest {
 
     @Test
     void sorteioIsWinnable(){
-        Sistema sistema = new Sistema();
+        Sistema sistema = new Sistema(new Scanner(System.in));
         char c = 'a';
-        for (int i = 0; i < 300; i++) {
+        for (int i = 0; i < 10000; i++) {
             String cpf = randomCpf();
             Apostador a = new Apostador(cpf, c + "");
             sistema.getParticipantes().put(cpf, a);
@@ -57,14 +57,14 @@ class SistemaTest {
 
     @Test
     void invalidCpfNotAcepted(){
-        Sistema sistema = new Sistema();
+        Sistema sistema = new Sistema(new Scanner(System.in));
         Assertions.assertFalse(sistema.registerApostador("12"));
         Assertions.assertFalse(sistema.registerApostador("abc12345678"));
     }
 
     @Test
     void escolhidosIsSorted(){
-        Sistema sistema = new Sistema();
+        Sistema sistema = new Sistema(new Scanner(System.in));
         char c = 'a';
         for (int i = 0; i < 300; i++) {
             String cpf = randomCpf();
@@ -83,6 +83,22 @@ class SistemaTest {
             }
         }
         Assertions.assertTrue(isSorted);
+    }
+    @Test
+    void oneWinnerCanWinTwoApostas(){
+        Sistema sistema = new Sistema(new Scanner(System.in));
+        char c = 'a';
+        String cpf = randomCpf();
+        Apostador a = new Apostador(cpf, c + "");
+        sistema.getParticipantes().put(cpf, a);
+        for (int i = 0; i < 300; i++) {
+            a.createAposta(i, "2");
+            c++;
+        }
+        sistema.startSorteio();
+        sistema.startApuracao();
+
+        Assertions.assertEquals(1, sistema.getVencedores().size());
     }
     private String randomCpf() {
         String cpf = "";
